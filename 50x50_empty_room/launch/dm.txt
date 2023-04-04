@@ -1,0 +1,36 @@
+Anemometer01:
+  fake_anemometer: {fixed_frame: map, sensor_frame: anemometer_frame}
+PID:
+  fake_pid: {fixed_frame: map, sensor_frame: pid_frame, sensor_model: 30}
+environment:
+  CAD_0: package://test_env/50x50_empty_room/cad_models/Walls.dae
+  CAD_0_color: [0.32, 0.36, 0.36]
+  CAD_1: package://test_env/50x50_empty_room/cad_models/Left_Door.dae
+  CAD_1_color: [1, 0, 0]
+  CAD_2: package://test_env/50x50_empty_room/cad_models/Right_Door.dae
+  CAD_2_color: [1, 0, 0]
+  fixed_frame: map
+  number_of_CAD: 3
+  number_of_sources: 1
+  occupancy3D_data: /home/lucas/catkin_ws/src/gaden/test_env/50x50_empty_room/OccupancyGrid3D.csv
+  source_0_color: [0.0, 1.0, 0.0]
+  source_0_position_x: 26.0
+  source_0_position_y: 10.0
+  source_0_position_z: 3.0
+  source_0_scale: 0.2
+  verbose: false
+  wait_preprocessing: false
+gaden_player: {allow_looping: true, initial_iteration: 0, loop_from_iteration: 1300,
+  loop_to_iteration: 1499, num_simulators: 1, occupancyFile: /home/lucas/catkin_ws/src/gaden/test_env/50x50_empty_room/OccupancyGrid3D.csv,
+  player_freq: 2, simulation_data_0: /home/lucas/catkin_ws/src/gaden/test_env/50x50_empty_room/gas_simulations/1ms/FilamentSimulation_gasType_0_sourcePosition_26.00_10.00_3.00,
+  verbose: false}
+map_server: {frame_id: map}
+rosdistro: 'melodic
+
+  '
+roslaunch:
+  uris: {host_ewan2_0__44843: 'http://Ewan2.0:44843/'}
+rosversion: '1.14.12
+
+  '
+run_id: 83a9c764-cd6c-11ed-bae6-6c94665a7b57
