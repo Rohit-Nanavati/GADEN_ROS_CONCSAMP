@@ -242,7 +242,7 @@ Visualization Manager:
       Marker Topic: /Anemometer01/WindSensor_display
       Name: Anemometer
       Namespaces:
-        measured_wind_inverted: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1

@@ -12,14 +12,14 @@ class tf_publisher:
     def __init__(self, sensor_topic, sensor_tf, map_tf, waypoints):
         self.waypoints = waypoints
         self.sample_time = 2.5
-	self.parent_tf = map_tf
-	self.sensor_tf = sensor_tf
-	self.sensor_topic = sensor_topic
+        self.parent_tf = map_tf
+        self.sensor_tf = sensor_tf
+        self.sensor_topic = sensor_topic
 
         self.GT_map = np.zeros((len(waypoints),))
 
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
-	self.tf_msg = TransformStamped()
+        self.tf_msg = TransformStamped()
         self.tf_msg.header.stamp = rospy.Time.now()
         self.tf_msg.header.frame_id = self.parent_tf
         self.tf_msg.child_frame_id = self.sensor_tf
@@ -30,41 +30,40 @@ class tf_publisher:
         self.tf_msg.transform.rotation.y = 0
         self.tf_msg.transform.rotation.z = 0
         self.tf_msg.transform.rotation.w = 1
-	msg = []
-	while not msg:
+        msg = []
+        while not msg:
             try:
                 msg = rospy.wait_for_message(self.sensor_topic, gas_sensor,0.1)
-	    except:
-	        self.tf_broadcaster.sendTransform(self.tf_msg)
+            except:
+                self.tf_broadcaster.sendTransform(self.tf_msg)
 
-	self.subscriber = rospy.Subscriber(sensor_topic, gas_sensor, self.callback)
+        self.subscriber = rospy.Subscriber(sensor_topic, gas_sensor, self.callback)
 
     def callback(self, msg):
-	self.tf_broadcaster.sendTransform(self.tf_msg)
+        self.tf_broadcaster.sendTransform(self.tf_msg)
 
     def publish_tf(self):
-	    rospy.loginfo('Publishing waypoint x,y,z: {}'.format(waypoints))
-            self.tf_msg.header.stamp = rospy.Time.now()
-            self.tf_msg.header.frame_id = self.parent_tf
-	    self.tf_msg.child_frame_id = self.sensor_tf
-            self.tf_msg.transform.translation.x = waypoints[0]
-            self.tf_msg.transform.translation.y = waypoints[1]
-            self.tf_msg.transform.translation.z = waypoints[2]
-            self.tf_msg.transform.rotation.x = 0
-            self.tf_msg.transform.rotation.y = 0
-            self.tf_msg.transform.rotation.z = 0
-            self.tf_msg.transform.rotation.w = 1
+        rospy.loginfo('Publishing waypoint x,y,z: {}'.format(waypoints))
+        self.tf_msg.header.stamp = rospy.Time.now()
+        self.tf_msg.header.frame_id = self.parent_tf
+        self.tf_msg.child_frame_id = self.sensor_tf
+        self.tf_msg.transform.translation.x = waypoints[0]
+        self.tf_msg.transform.translation.y = waypoints[1]
+        self.tf_msg.transform.translation.z = waypoints[2]
+        self.tf_msg.transform.rotation.x = 0
+        self.tf_msg.transform.rotation.y = 0
+        self.tf_msg.transform.rotation.z = 0
+        self.tf_msg.transform.rotation.w = 1
 
-	    msg = []
+        msg = []
 
+        msg = rospy.wait_for_message(self.sensor_topic, gas_sensor)
+
+        t_start = rospy.get_time()
+        sensor_buffer = []
+        while rospy.get_time() - t_start < self.sample_time:
             msg = rospy.wait_for_message(self.sensor_topic, gas_sensor)
-
-            t_start = rospy.get_time()
-            sensor_buffer = []
-            while rospy.get_time() - t_start < self.sample_time:
-                msg = rospy.wait_for_message(self.sensor_topic, gas_sensor)
-	        sensor_buffer.append(msg.raw)           
-
+            sensor_buffer.append(msg.raw)           
             self.GT_map = np.mean(np.array(sensor_buffer))
 
 
